@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitor Complex - High-Performance Telemetry & Utility Nexus</title>
+    <meta name="description" content="Monitor Complex: All-in-one real-time command center featuring broadband speed test, customizable QR code studio, location-aware live weather radar, and hyper-link aggregator.">
+    <meta name="theme-color" content="#08090d">
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+
+    <!-- Fonts: Plus Jakarta Sans for UI & JetBrains Mono for metrics -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="app-body">
+    <!-- Ambient glowing grid canvas & backdrop lights -->
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+    <div class="ambient-grid"></div>
+
+    <div class="app-layout">
+        <!-- GLOBAL APP HEADER -->
+        <header class="app-header" id="main-header">
+            <div class="header-brand-wrap">
+                <div class="brand-logo-container">
+                    <svg class="brand-hex-icon" viewBox="0 0 44 44" fill="none">
+                        <polygon points="22 2, 40 12, 40 32, 22 42, 4 32, 4 12" stroke="url(#brand-grad)" stroke-width="2.5" fill="rgba(0, 240, 255, 0.05)"/>
+                        <circle cx="22" cy="22" r="8" fill="#00f0ff" fill-opacity="0.2" stroke="#00f0ff" stroke-width="2"/>
+                        <circle cx="22" cy="22" r="3" fill="#00ff88"/>
+                        <defs>
+                            <linearGradient id="brand-grad" x1="0" y1="0" x2="44" y2="44">
+                                <stop stop-color="#00f0ff"/>
+                                <stop offset="1" stop-color="#8b5cf6"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <div class="brand-pulse-ring"></div>
+                </div>
+                <div class="brand-text-block">
+                    <h1 class="brand-title">MONITOR COMPLEX</h1>
+                    <span class="brand-subtitle">TELEMETRY & UTILITY NEXUS</span>
+                </div>
+            </div>
+
+            <!-- Global Telemetry Status & Controls -->
+            <div class="header-telemetry-wrap">
+                <div class="telemetry-pill" id="system-clock-pill" title="Click to toggle UTC / Local time">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    <span class="clock-time font-mono" id="system-clock">00:00:00</span>
+                    <span class="clock-date" id="system-date">Loading...</span>
+                </div>
+
+                <div class="status-pill online" id="system-status-indicator" title="System Status">
+                    <span class="pulse-dot"></span>
+                    <span class="status-label">ONLINE</span>
+                </div>
+
+                <button class="control-btn" id="btn-sound-toggle" title="Toggle Synthesized Audio SFX">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                    <span>SFX On</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- NAVIGATION BAR -->
+        <nav class="app-nav" aria-label="Main Navigation">
+            <div class="nav-tabs-wrapper" role="tablist">
+                <button class="nav-tab-btn active" data-tab="overview" role="tab" aria-selected="true" id="nav-tab-overview">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                    <span>Command Deck</span>
+                    <span class="key-shortcut">1</span>
+                </button>
+
+                <button class="nav-tab-btn" data-tab="speedtest" role="tab" aria-selected="false" id="nav-tab-speedtest">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                    <span>Speed Test</span>
+                    <span class="key-shortcut">2</span>
+                </button>
+
+                <button class="nav-tab-btn" data-tab="qrcode" role="tab" aria-selected="false" id="nav-tab-qrcode">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><line x1="14" y1="14" x2="14" y2="17"/><line x1="17" y1="14" x2="17" y2="14.01"/><line x1="20" y1="14" x2="20" y2="20"/><line x1="14" y1="20" x2="17" y2="20"/></svg>
+                    <span>QR Studio</span>
+                    <span class="key-shortcut">3</span>
+                </button>
+
+                <button class="nav-tab-btn" data-tab="weather" role="tab" aria-selected="false" id="nav-tab-weather">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"/></svg>
+                    <span>Weather Hub</span>
+                    <span class="key-shortcut">4</span>
+                </button>
+
+                <button class="nav-tab-btn" data-tab="links" role="tab" aria-selected="false" id="nav-tab-links">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                    <span>Link Matrix</span>
+                    <span class="key-shortcut">5</span>
+                </button>
+
+                <button class="nav-tab-btn" data-tab="netconfig" role="tab" aria-selected="false" id="nav-tab-netconfig">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
+                    <span>Network Hub</span>
+                    <span class="key-shortcut">6</span>
+                </button>
+
+                <button class="nav-tab-btn" data-tab="news" role="tab" aria-selected="false" id="nav-tab-news">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"/></svg>
+                    <span>News Hub</span>
+                    <span class="badge-live-nav">LIVE</span>
+                    <span class="key-shortcut">7</span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- MAIN VIEWPORT CONTAINER -->
+        <main class="app-main" id="main-content">
+            
+            <!-- ============================================== -->
+            <!-- TAB 1: OVERVIEW COMMAND DECK -->
+            <!-- ============================================== -->
+            <section class="tab-panel active" id="tab-overview" role="tabpanel" aria-labelledby="nav-tab-overview">
+                <!-- Overview Telemetry Bar -->
+                <div class="overview-quick-telemetry">
+                    <div class="telemetry-box">
+                        <span class="t-box-label">PUBLIC IP</span>
+                        <span class="t-box-val font-mono" id="overview-stat-ip">Detecting...</span>
+                    </div>
+                    <div class="telemetry-box">
+                        <span class="t-box-label">LAST PING</span>
+                        <span class="t-box-val font-mono text-cyan" id="overview-stat-ping">-- ms</span>
+                    </div>
+                    <div class="telemetry-box">
+                        <span class="t-box-label">DOWNLOAD SPEED</span>
+                        <span class="t-box-val font-mono text-lime" id="overview-stat-speed">Ready</span>
+                    </div>
+                    <div class="telemetry-box">
+                        <span class="t-box-label">LOCAL WEATHER</span>
+                        <span class="t-box-val text-amber" id="overview-weather-temp">--°C</span>
+                    </div>
+                </div>
+
+                <!-- 4 Major Module Preview Grid -->
+                <div class="overview-grid">
+                    
+                    <!-- Card 1: Speed Matrix Glance -->
+                    <div class="deck-card deck-card-speed">
+                        <div class="deck-card-header">
+                            <div class="deck-card-title-wrap">
+                                <span class="deck-card-icon icon-speed">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                                </span>
+                                <h3>Bandwidth & Latency</h3>
+                            </div>
+                            <span class="deck-tag">Real-Time</span>
+                        </div>
+                        <div class="deck-card-body">
+                            <p class="deck-card-desc">High precision latency jitter testing and multi-stream download/upload diagnostics.</p>
+                            <div class="speed-glance-visual">
+                                <div class="pulse-radar-circle">
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                                </div>
+                                <div class="speed-glance-info">
+                                    <span class="glance-label">READY FOR DIAGNOSTICS</span>
+                                    <span class="glance-note">Cloudflare & Edge CDN Nodes</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="deck-card-footer">
+                            <button class="btn-deck-action" id="overview-btn-speed">
+                                <span>RUN SPEED TEST</span>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Quick QR Studio Glance -->
+                    <div class="deck-card deck-card-qr">
+                        <div class="deck-card-header">
+                            <div class="deck-card-title-wrap">
+                                <span class="deck-card-icon icon-qr">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                                </span>
+                                <h3>QR Code Studio</h3>
+                            </div>
+                            <span class="deck-tag">Vector & PNG</span>
+                        </div>
+                        <div class="deck-card-body">
+                            <p class="deck-card-desc">Generate stylish QR codes for URLs, Wi-Fi networks, and contacts instantly.</p>
+                            <div class="quick-qr-inline-wrap">
+                                <canvas id="overview-qr-canvas" width="80" height="80" class="overview-qr-preview"></canvas>
+                                <div class="quick-qr-input-group">
+                                    <input type="text" id="overview-qr-input" placeholder="Type URL or text to generate..." class="deck-input">
+                                    <button class="btn-deck-inline" id="overview-qr-btn">Open Studio</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Live Weather Glance -->
+                    <div class="deck-card deck-card-weather">
+                        <div class="deck-card-header">
+                            <div class="deck-card-title-wrap">
+                                <span class="deck-card-icon icon-weather">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"/></svg>
+                                </span>
+                                <h3>Meteorological Station</h3>
+                            </div>
+                            <span class="deck-tag" id="overview-weather-city">Location</span>
+                        </div>
+                        <div class="deck-card-body">
+                            <div class="overview-weather-display">
+                                <div id="overview-weather-icon" class="overview-weather-svg">
+                                    <svg class="weather-icon-svg" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/></svg>
+                                </div>
+                                <div class="overview-weather-meta">
+                                    <span class="overview-temp-large font-mono" id="overview-weather-temp-lg">--</span>
+                                    <span class="overview-cond-text" id="overview-weather-desc">Detecting conditions...</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="deck-card-footer">
+                            <button class="btn-deck-action" onclick="document.getElementById('nav-tab-weather').click()">
+                                <span>VIEW 7-DAY FORECAST & RADAR</span>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Card 4: Starred Quick Links -->
+                    <div class="deck-card deck-card-links">
+                        <div class="deck-card-header">
+                            <div class="deck-card-title-wrap">
+                                <span class="deck-card-icon icon-links">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/></svg>
+                                </span>
+                                <h3>Quick Launch Pad</h3>
+                            </div>
+                            <span class="deck-tag">Starred Links</span>
+                        </div>
+                        <div class="deck-card-body">
+                            <div class="overview-starred-links" id="overview-starred-links">
+                                <!-- Populated dynamically from links -->
+                            </div>
+                        </div>
+                        <div class="deck-card-footer">
+                            <button class="btn-deck-action" onclick="document.getElementById('nav-tab-links').click()">
+                                <span>EXPLORE ALL BOOKMARKS</span>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Card 5: Network Configuration Hub Glance -->
+                    <div class="deck-card deck-card-netconfig">
+                        <div class="deck-card-header">
+                            <div class="deck-card-title-wrap">
+                                <span class="deck-card-icon icon-netconfig">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
+                                </span>
+                                <h3>Network Configuration</h3>
+                            </div>
+                            <span class="deck-tag" id="overview-net-local-tag">Local LAN</span>
+                        </div>
+                        <div class="deck-card-body">
+                            <p class="deck-card-desc">Local IP detection, router gateway discovery, and DNS latency benchmarking.</p>
+                            <div class="net-glance-stats font-mono">
+                                <div class="net-stat-row">
+                                    <span class="net-lbl">LOCAL IP:</span>
+                                    <span class="net-val text-cyan" id="overview-net-local-ip">Probing...</span>
+                                </div>
+                                <div class="net-stat-row">
+                                    <span class="net-lbl">GATEWAY:</span>
+                                    <span class="net-val text-lime" id="overview-net-gateway">192.168.1.1</span>
+                                </div>
+                                <div class="net-stat-row">
+                                    <span class="net-lbl">FASTEST DNS:</span>
+                                    <span class="net-val text-amber" id="overview-net-dns">Cloudflare 1.1.1.1</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="deck-card-footer">
+                            <button class="btn-deck-action" onclick="document.getElementById('nav-tab-netconfig').click()">
+                                <span>CONFIGURE NETWORK & DNS</span>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Card 6: Live News & Streaming Feeds Glance -->
+                    <div class="deck-card deck-card-news">
+                        <div class="deck-card-header">
+                            <div class="deck-card-title-wrap">
+                                <span class="deck-card-icon icon-news">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"/></svg>
+                                </span>
+                                <h3>Live News & Streams</h3>
+                            </div>
+                            <span class="deck-tag badge-live-pulse">🔴 LIVE FEED</span>
+                        </div>
+                        <div class="deck-card-body">
+                            <div class="news-glance-headline">
+                                <span class="breaking-mini-tag">BREAKING</span>
+                                <span class="news-glance-title" id="overview-news-headline">Connecting to global & regional news wire...</span>
+                            </div>
+                            <div class="news-glance-channels">
+                                <span class="glance-chan-pill">🇬🇧 Sky News</span>
+                                <span class="glance-chan-pill">🇶🇦 Al Jazeera</span>
+                                <span class="glance-chan-pill">🇩🇪 DW</span>
+                                <span class="glance-chan-pill">🇺🇸 ABC</span>
+                                <span class="glance-chan-pill">🚀 NASA TV</span>
+                            </div>
+                        </div>
+                        <div class="deck-card-footer">
+                            <button class="btn-deck-action" onclick="document.getElementById('nav-tab-news').click()">
+                                <span>WATCH LIVE FEEDS & LOCAL NEWS</span>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- ============================================== -->
+            <!-- TAB 2: SPEED TEST SUITE -->
+            <!-- ============================================== -->
+            <section class="tab-panel" id="tab-speedtest" role="tabpanel" aria-labelledby="nav-tab-speedtest">
+                <div class="speedtest-container">
+                    
+                    <!-- Center Speedometer Gauge -->
+                    <div class="speedometer-wrapper">
+                        <div class="speedometer-inner">
+                            <svg class="speedometer-dial-svg" viewBox="0 0 240 240">
+                                <defs>
+                                    <linearGradient id="speedGaugeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" stop-color="#00f0ff" />
+                                        <stop offset="60%" stop-color="#38bdf8" />
+                                        <stop offset="100%" stop-color="#10b981" />
+                                    </linearGradient>
+                                </defs>
+                                <!-- Track background circle -->
+                                <circle cx="120" cy="120" r="90" class="gauge-track"/>
+                                <!-- Animated active progress arc -->
+                                <circle cx="120" cy="120" r="90" class="gauge-progress" id="speed-gauge-progress"/>
+                            </svg>
+
+                            <!-- Rotating needle -->
+                            <div class="gauge-needle-wrap" id="speed-gauge-needle">
+                                <div class="gauge-needle"></div>
+                            </div>
+                            <div class="gauge-center-cap"></div>
+
+                            <!-- Digital Speed Readout -->
+                            <div class="gauge-readout">
+                                <span class="gauge-phase" id="speed-gauge-phase">READY</span>
+                                <span class="gauge-number font-mono" id="speed-gauge-number">0.0</span>
+                                <span class="gauge-unit" id="speed-gauge-unit">Mbps</span>
+                            </div>
+                        </div>
+
+                        <!-- Big Start / Stop Test Button -->
+                        <div class="speed-action-row">
+                            <button class="btn-speed-start" id="speed-start-btn">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                                <span>START TEST</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Telemetry Metrics Grid -->
+                    <div class="speed-metrics-grid">
+                        <div class="metric-card" id="metric-ping-card">
+                            <div class="metric-header">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+                                <span>LATENCY (PING)</span>
+                            </div>
+                            <div class="metric-body">
+                                <span class="metric-val font-mono" id="speed-stat-ping">--</span>
+                                <span class="metric-unit">ms</span>
+                            </div>
+                        </div>
+
+                        <div class="metric-card" id="metric-jitter-card">
+                            <div class="metric-header">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                                <span>JITTER</span>
+                            </div>
+                            <div class="metric-body">
+                                <span class="metric-val font-mono" id="speed-stat-jitter">--</span>
+                                <span class="metric-unit">ms</span>
+                            </div>
+                        </div>
+
+                        <div class="metric-card metric-download" id="metric-download-card">
+                            <div class="metric-header">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+                                <span>DOWNLOAD</span>
+                            </div>
+                            <div class="metric-body">
+                                <span class="metric-val font-mono cyan" id="speed-stat-download">--</span>
+                                <span class="metric-unit">Mbps</span>
+                            </div>
+                        </div>
+
+                        <div class="metric-card metric-upload" id="metric-upload-card">
+                            <div class="metric-header">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+                                <span>UPLOAD</span>
+                            </div>
+                            <div class="metric-body">
+                                <span class="metric-val font-mono lime" id="speed-stat-upload">--</span>
+                                <span class="metric-unit">Mbps</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Real-Time Bandwidth Curve Canvas Graph -->
+                    <div class="speed-graph-card">
+                        <div class="speed-graph-header">
+                            <div class="graph-title-wrap">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                                <span>LIVE BANDWIDTH WAVEFORM</span>
+                            </div>
+                            <div class="network-details-bar font-mono">
+                                <span>IP: <strong id="speed-stat-ip">--</strong></span>
+                                <span class="separator">•</span>
+                                <span>TYPE: <strong id="speed-stat-type">Broadband</strong></span>
+                            </div>
+                        </div>
+                        <div class="speed-canvas-wrap">
+                            <canvas id="speed-graph-canvas" height="150"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Speed Verdict Banner (appears after test completion) -->
+                    <div class="speed-verdict-card" id="speed-verdict-card" style="display: none;"></div>
+
+                    <!-- Speed History Table -->
+                    <div class="speed-history-card">
+                        <div class="history-card-header">
+                            <h3>Test History Log</h3>
+                            <button class="btn-clear-history" id="speed-clear-history">Clear History</button>
+                        </div>
+                        <div class="speed-history-list" id="speed-history-list">
+                            <!-- Injected by speedtest.js -->
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- ============================================== -->
+            <!-- TAB 3: QR CODE GENERATOR STUDIO -->
+            <!-- ============================================== -->
+            <section class="tab-panel" id="tab-qrcode" role="tabpanel" aria-labelledby="nav-tab-qrcode">
+                <div class="qr-studio-layout">
+                    
+                    <!-- Left: Studio Settings & Inputs -->
+                    <div class="qr-studio-controls">
+                        
+                        <!-- Content Type Selector Pills -->
+                        <div class="qr-section-box">
+                            <label class="section-label">PAYLOAD TYPE</label>
+                            <div class="qr-type-pills">
+                                <button class="qr-type-btn active" data-type="url">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                                    <span>URL / Web</span>
+                                </button>
+                                <button class="qr-type-btn" data-type="text">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="21" y1="6" x2="3" y2="6"/><line x1="15" y1="12" x2="3" y2="12"/><line x1="17" y1="18" x2="3" y2="18"/></svg>
+                                    <span>Text Note</span>
+                                </button>
+                                <button class="qr-type-btn" data-type="wifi">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/></svg>
+                                    <span>Wi-Fi Network</span>
+                                </button>
+                                <button class="qr-type-btn" data-type="vcard">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                    <span>vCard Contact</span>
+                                </button>
+                                <button class="qr-type-btn" data-type="email">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                                    <span>Email</span>
+                                </button>
+                                <button class="qr-type-btn" data-type="phone">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                                    <span>Phone</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Dynamic Input Fields -->
+                        <div class="qr-section-box">
+                            <label class="section-label">PAYLOAD DATA</label>
+
+                            <!-- URL Fields -->
+                            <div class="qr-type-fields" data-for="url">
+                                <input type="url" id="qr-type-url-input" class="qr-input-field" placeholder="https://example.com" value="https://monitor-complex.local">
+                            </div>
+
+                            <!-- Text Fields -->
+                            <div class="qr-type-fields" data-for="text" style="display: none;">
+                                <textarea id="qr-input-text" class="qr-input-field qr-textarea" placeholder="Enter any plain text or confidential note..." rows="4">Monitor Complex: Telemetry & Utility Nexus</textarea>
+                            </div>
+
+                            <!-- Wi-Fi Fields -->
+                            <div class="qr-type-fields" data-for="wifi" style="display: none;">
+                                <div class="form-row">
+                                    <input type="text" id="qr-wifi-ssid" class="qr-input-field" placeholder="Network SSID (Name)" value="CyberNet-5G">
+                                    <select id="qr-wifi-enc" class="qr-input-field">
+                                        <option value="WPA">WPA / WPA2 / WPA3</option>
+                                        <option value="WEP">WEP</option>
+                                        <option value="nopass">None (Open)</option>
+                                    </select>
+                                </div>
+                                <div class="form-row">
+                                    <input type="text" id="qr-wifi-pass" class="qr-input-field" placeholder="Wi-Fi Password" value="Complex#2026!">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="qr-wifi-hidden">
+                                        <span>Hidden SSID</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- vCard Fields -->
+                            <div class="qr-type-fields" data-for="vcard" style="display: none;">
+                                <div class="form-row">
+                                    <input type="text" id="qr-vcard-name" class="qr-input-field" placeholder="Full Name" value="Alex Vance">
+                                    <input type="text" id="qr-vcard-org" class="qr-input-field" placeholder="Company / Team" value="Black Mesa Labs">
+                                </div>
+                                <div class="form-row">
+                                    <input type="tel" id="qr-vcard-phone" class="qr-input-field" placeholder="Phone Number" value="+1 (555) 019-2834">
+                                    <input type="email" id="qr-vcard-email" class="qr-input-field" placeholder="Email Address" value="alex@complex.dev">
+                                </div>
+                            </div>
+
+                            <!-- Email Fields -->
+                            <div class="qr-type-fields" data-for="email" style="display: none;">
+                                <input type="email" id="qr-email-to" class="qr-input-field" placeholder="Recipient Email (e.g. contact@domain.com)">
+                                <input type="text" id="qr-email-sub" class="qr-input-field mt-sm" placeholder="Subject">
+                                <textarea id="qr-email-body" class="qr-input-field qr-textarea mt-sm" placeholder="Email Body..." rows="2"></textarea>
+                            </div>
+
+                            <!-- Phone Fields -->
+                            <div class="qr-type-fields" data-for="phone" style="display: none;">
+                                <input type="tel" id="qr-phone-num" class="qr-input-field" placeholder="+1234567890">
+                            </div>
+                        </div>
+
+                        <!-- Color Customization -->
+                        <div class="qr-section-box">
+                            <label class="section-label">COLORS & PALETTES</label>
+                            <div class="color-picker-row">
+                                <div class="picker-group">
+                                    <span class="picker-title">Foreground</span>
+                                    <div class="picker-input-wrap">
+                                        <input type="color" id="qr-color-dark" value="#00f0ff">
+                                    </div>
+                                </div>
+                                <div class="picker-group">
+                                    <span class="picker-title">Background</span>
+                                    <div class="picker-input-wrap">
+                                        <input type="color" id="qr-color-light" value="#0e121a">
+                                    </div>
+                                </div>
+                                <label class="checkbox-label transparent-check">
+                                    <input type="checkbox" id="qr-transparent-bg">
+                                    <span>Transparent BG</span>
+                                </label>
+                            </div>
+
+                            <!-- Preset Color Palette Buttons -->
+                            <div class="qr-preset-palettes">
+                                <button class="qr-preset-color" data-color="#00f0ff" style="background: #00f0ff;" title="Cyber Cyan"></button>
+                                <button class="qr-preset-color" data-color="#10b981" style="background: #10b981;" title="Emerald Lime"></button>
+                                <button class="qr-preset-color" data-color="#a855f7" style="background: #a855f7;" title="Electric Purple"></button>
+                                <button class="qr-preset-color" data-color="#f59e0b" style="background: #f59e0b;" title="Amber Flare"></button>
+                                <button class="qr-preset-color" data-color="#ffffff" style="background: #ffffff;" title="Crisp White"></button>
+                                <button class="qr-preset-color" data-color="#090a0f" style="background: #090a0f; border-color: #334155;" title="Obsidian Black"></button>
+                            </div>
+                        </div>
+
+                        <!-- Shapes, ECC & Size Controls -->
+                        <div class="qr-section-box">
+                            <label class="section-label">STYLE & RESOLUTION</label>
+                            
+                            <div class="qr-sub-row">
+                                <span class="sub-label">Dot Style:</span>
+                                <div class="button-toggle-group">
+                                    <button class="dot-style-btn active" data-style="square">Square</button>
+                                    <button class="dot-style-btn" data-style="dots">Dots</button>
+                                    <button class="dot-style-btn" data-style="rounded">Rounded</button>
+                                </div>
+                            </div>
+
+                            <div class="qr-sub-row mt-sm">
+                                <span class="sub-label">Error Correction:</span>
+                                <div class="button-toggle-group">
+                                    <button class="ecc-btn" data-ecc="L" title="7% error recovery">L (7%)</button>
+                                    <button class="ecc-btn active" data-ecc="M" title="15% error recovery">M (15%)</button>
+                                    <button class="ecc-btn" data-ecc="Q" title="25% error recovery">Q (25%)</button>
+                                    <button class="ecc-btn" data-ecc="H" title="30% error recovery (recommended for logos)">H (30%)</button>
+                                </div>
+                            </div>
+
+                            <div class="qr-sub-row mt-sm">
+                                <span class="sub-label">Size: <strong id="qr-size-label">340px</strong></span>
+                                <input type="range" id="qr-size-slider" min="160" max="800" step="20" value="340" class="range-slider">
+                            </div>
+                        </div>
+
+                        <!-- Center Logo & Branding -->
+                        <div class="qr-section-box">
+                            <label class="section-label">CENTER LOGO / EMBED</label>
+                            <div class="logo-presets-row">
+                                <button class="logo-preset-btn active" data-logo="none">None</button>
+                                <button class="logo-preset-btn" data-logo="wifi" title="WiFi Icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/></svg>
+                                </button>
+                                <button class="logo-preset-btn" data-logo="link" title="Link Icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                                </button>
+                                <button class="logo-preset-btn" data-logo="star" title="Star Icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                </button>
+                                <button class="logo-preset-btn" data-logo="shield" title="Security Shield">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                </button>
+                                <label class="btn-custom-logo-upload" title="Upload custom image logo">
+                                    <input type="file" id="qr-logo-upload" accept="image/*" style="display: none;">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                                    <span>Upload Image</span>
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Right: Live Canvas Preview & Exports -->
+                    <div class="qr-studio-preview">
+                        <div class="preview-glass-card">
+                            <div class="preview-badge">LIVE VECTOR PREVIEW</div>
+                            
+                            <div class="canvas-display-wrapper">
+                                <canvas id="qr-output-canvas" width="340" height="340"></canvas>
+                            </div>
+
+                            <div class="export-actions-row">
+                                <button class="btn-export-primary" id="qr-btn-download-png">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                    <span>Download PNG</span>
+                                </button>
+                                <button class="btn-export-secondary" id="qr-btn-download-svg">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                                    <span>Download SVG</span>
+                                </button>
+                                <button class="btn-export-secondary" id="qr-btn-copy" title="Copy QR Code Image to Clipboard">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                                    <span>Copy Image</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- ============================================== -->
+            <!-- TAB 4: METEOROLOGICAL STATION (WEATHER) -->
+            <!-- ============================================== -->
+            <section class="tab-panel" id="tab-weather" role="tabpanel" aria-labelledby="nav-tab-weather">
+                <div class="weather-station-container">
+                    
+                    <!-- Search & Geolocation Control Bar -->
+                    <div class="weather-control-bar">
+                        <div class="weather-search-wrapper">
+                            <svg class="search-icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                            <input type="text" id="weather-search-city" placeholder="Search any city or coordinates worldwide..." autocomplete="off">
+                            <div class="search-dropdown-menu" id="weather-search-dropdown" style="display: none;"></div>
+                        </div>
+
+                        <div class="weather-actions-group">
+                            <button class="btn-weather-action" id="weather-btn-detect" title="Detect GPS / Local Coordinates">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="22" y1="12" x2="18" y2="12"/><line x1="6" y1="12" x2="2" y2="12"/><line x1="12" y1="6" x2="12" y2="2"/><line x1="12" y1="22" x2="12" y2="18"/></svg>
+                                <span>Detect My Location</span>
+                            </button>
+
+                            <button class="btn-unit-toggle" id="weather-btn-unit" title="Switch Celsius / Fahrenheit">°C</button>
+                        </div>
+                    </div>
+
+                    <!-- Atmospheric Hero Card -->
+                    <div class="weather-hero-card">
+                        <div class="hero-left-col">
+                            <div class="weather-location-heading">
+                                <h2 class="weather-city" id="weather-loc-name">Locating...</h2>
+                                <span class="weather-country" id="weather-loc-country"></span>
+                            </div>
+                            <div class="weather-temp-wrap">
+                                <span class="weather-temp-num font-mono" id="weather-current-temp">--</span>
+                                <span class="weather-temp-deg" id="weather-unit-symbol">°C</span>
+                            </div>
+                            <div class="weather-condition-desc" id="weather-current-condition">Acquiring satellite feed...</div>
+                            <div class="weather-sub-metrics">
+                                <span id="weather-feels-like">Feels like --</span>
+                                <span class="separator">•</span>
+                                <span id="weather-high-low">H: --° / L: --°</span>
+                            </div>
+                        </div>
+
+                        <div class="hero-right-col">
+                            <div class="weather-hero-icon-wrap" id="weather-main-icon">
+                                <svg class="weather-icon-svg icon-sun" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/></svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Telemetry Sensor Matrix -->
+                    <div class="weather-sensors-grid">
+                        <div class="sensor-card">
+                            <div class="sensor-head">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                                <span>HUMIDITY</span>
+                            </div>
+                            <div class="sensor-val font-mono" id="weather-stat-humidity">--%</div>
+                            <div class="sensor-sub">Dew Point & Moisture</div>
+                        </div>
+
+                        <div class="sensor-card">
+                            <div class="sensor-head">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+                                <span>WIND COMPASS</span>
+                            </div>
+                            <div class="sensor-val-row">
+                                <span class="sensor-val font-mono" id="weather-stat-wind">-- km/h</span>
+                                <div class="compass-rose-mini">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" id="weather-compass-arrow"><polygon points="12 2 16 18 12 14 8 18 12 2" fill="#00f0ff"/></svg>
+                                </div>
+                            </div>
+                            <div class="sensor-sub" id="weather-stat-compass">--</div>
+                        </div>
+
+                        <div class="sensor-card">
+                            <div class="sensor-head">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+                                <span>UV INDEX</span>
+                            </div>
+                            <div class="sensor-val-row">
+                                <span class="sensor-val font-mono" id="weather-stat-uv">--</span>
+                                <span class="badge-uv" id="weather-uv-badge">Normal</span>
+                            </div>
+                            <div class="sensor-sub">Solar radiation exposure</div>
+                        </div>
+
+                        <div class="sensor-card">
+                            <div class="sensor-head">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2"><path d="M12 2v20"/><path d="m17 5-5-3-5 3"/><path d="m17 19-5 3-5-3"/></svg>
+                                <span>AIR PRESSURE</span>
+                            </div>
+                            <div class="sensor-val font-mono" id="weather-stat-pressure">-- hPa</div>
+                            <div class="sensor-sub">Barometric Sea Level</div>
+                        </div>
+
+                        <div class="sensor-card sensor-sun-card">
+                            <div class="sensor-head">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><path d="M12 10V2"/><path d="m4.93 10.93 1.41 1.41"/><path d="M2 18h20"/><path d="M20 10h-2"/></svg>
+                                <span>SUNRISE & SUNSET</span>
+                            </div>
+                            <div class="sun-times-row font-mono">
+                                <div>🌅 <span id="weather-sunrise-time">--:--</span></div>
+                                <div>🌇 <span id="weather-sunset-time">--:--</span></div>
+                            </div>
+                            <div class="sensor-sub">Solar Cycle</div>
+                        </div>
+                    </div>
+
+                    <!-- 24-Hour Hourly Forecast Rail -->
+                    <div class="weather-section-block">
+                        <div class="section-block-header">
+                            <h3>24-Hour Hourly Trajectory</h3>
+                            <span class="block-note">Scroll horizontally for timeline</span>
+                        </div>
+                        <div class="hourly-forecast-scroll" id="weather-hourly-list">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- 7-Day Extended Forecast -->
+                    <div class="weather-section-block">
+                        <div class="section-block-header">
+                            <h3>7-Day Synoptic Forecast</h3>
+                            <span class="block-note">Extended outlook</span>
+                        </div>
+                        <div class="daily-forecast-list" id="weather-daily-list">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- ============================================== -->
+            <!-- TAB 5: HYPERLINK AGGREGATOR -->
+            <!-- ============================================== -->
+            <section class="tab-panel" id="tab-links" role="tabpanel" aria-labelledby="nav-tab-links">
+                <div class="links-hub-container">
+                    
+                    <!-- Search, Sort & Actions Header -->
+                    <div class="links-toolbar">
+                        <div class="links-search-bar">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                            <input type="text" id="links-search-input" placeholder="Search by title, domain, description or #tag...">
+                        </div>
+
+                        <div class="links-controls-row">
+                            <div class="sort-selector-wrap">
+                                <label for="links-sort-select">Sort:</label>
+                                <select id="links-sort-select" class="deck-select">
+                                    <option value="default">Default Order</option>
+                                    <option value="clicks">Most Visited</option>
+                                    <option value="az">Alphabetical (A-Z)</option>
+                                    <option value="recent">Recently Added</option>
+                                </select>
+                            </div>
+
+                            <button class="btn-primary-action" id="links-btn-add-modal">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                <span>Add Link</span>
+                            </button>
+
+                            <button class="btn-secondary-action" id="links-btn-open-category" title="Launch all visible links simultaneously">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+                                <span>Launch All</span>
+                            </button>
+
+                            <div class="backup-actions-wrap">
+                                <button class="btn-icon-action" id="links-btn-export" title="Export Bookmarks to JSON Backup">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                </button>
+                                <button class="btn-icon-action" id="links-btn-import" title="Import Bookmarks from JSON Backup">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                                </button>
+                                <input type="file" id="links-import-file" accept=".json" style="display: none;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category Filter Pills Bar -->
+                    <div class="category-filters-scroll" id="links-category-list">
+                        <!-- Injected by links.js -->
+                    </div>
+
+                    <!-- Links Card Grid -->
+                    <div class="links-cards-grid" id="links-grid">
+                        <!-- Injected dynamically -->
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- ============================================== -->
+            <!-- TAB 6: NETWORK CONFIGURATION HUB -->
+            <!-- ============================================== -->
+            <section class="tab-panel" id="tab-netconfig" role="tabpanel" aria-labelledby="nav-tab-netconfig">
+                <div class="netconfig-container">
+                    
+                    <!-- Network Telemetry Cards -->
+                    <div class="net-telemetry-grid">
+                        <div class="net-card">
+                            <div class="net-card-head">
+                                <span class="net-card-icon icon-public-ip">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                                </span>
+                                <span>PUBLIC IP & PROVIDER</span>
+                            </div>
+                            <div class="net-card-body">
+                                <div class="net-big-ip font-mono text-cyan" id="net-stat-public-ip">Detecting...</div>
+                                <div class="net-meta-line" id="net-stat-isp">ISP: Connecting...</div>
+                                <div class="net-badges-row">
+                                    <span class="net-badge" id="net-stat-asn">ASN: --</span>
+                                    <span class="net-badge" id="net-stat-country">Region: --</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="net-card">
+                            <div class="net-card-head">
+                                <span class="net-card-icon icon-local-ip">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
+                                </span>
+                                <span>LOCAL PRIVATE IP (LAN)</span>
+                            </div>
+                            <div class="net-card-body">
+                                <div class="net-big-ip font-mono text-lime" id="net-stat-local-ip">Probing WebRTC...</div>
+                                <div class="net-meta-line">Private Subnet Interface</div>
+                                <div class="net-badges-row">
+                                    <span class="net-badge badge-webrtc">WebRTC Candidate</span>
+                                    <span class="net-badge" id="net-stat-ipv6">IPv6: Probing...</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="net-card">
+                            <div class="net-card-head">
+                                <span class="net-card-icon icon-gateway">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/></svg>
+                                </span>
+                                <span>ROUTER GATEWAY</span>
+                            </div>
+                            <div class="net-card-body">
+                                <div class="net-big-ip font-mono text-amber" id="net-stat-gateway">192.168.1.1</div>
+                                <div class="net-meta-line">Default Hardware Gateway</div>
+                                <div class="net-badges-row">
+                                    <a href="http://192.168.1.1" target="_blank" rel="noopener noreferrer" class="btn-router-admin-launch" id="btn-launch-gateway">
+                                        <span>Open Router Admin</span>
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="net-card">
+                            <div class="net-card-head">
+                                <span class="net-card-icon icon-interface">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/></svg>
+                                </span>
+                                <span>LINK INTERFACE</span>
+                            </div>
+                            <div class="net-card-body">
+                                <div class="net-big-ip font-mono" id="net-stat-effective-type">Broadband</div>
+                                <div class="net-meta-line" id="net-stat-downlink">Downlink: --</div>
+                                <div class="net-badges-row">
+                                    <span class="net-badge" id="net-stat-rtt">RTT: -- ms</span>
+                                    <span class="net-badge status-good">Link Active</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- DNS Benchmark & Fast Switch Configurator -->
+                    <div class="net-section-card">
+                        <div class="net-section-header">
+                            <div>
+                                <h3>DNS Benchmark & Quick Switch Configurator</h3>
+                                <p class="section-subtitle">Real-time latency comparison across top privacy and speed DNS providers with 1-click terminal setup.</p>
+                            </div>
+                            <button class="btn-secondary-action" id="btn-retest-dns">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+                                <span>Re-test Latency</span>
+                            </button>
+                        </div>
+
+                        <div class="dns-benchmark-grid" id="dns-providers-list">
+                            <!-- Populated dynamically -->
+                        </div>
+
+                        <!-- OS Configuration Command Box -->
+                        <div class="dns-config-box">
+                            <div class="dns-config-head">
+                                <div class="os-selector-tabs" id="dns-os-tabs">
+                                    <button class="os-tab-btn active" data-os="windows">Windows (PowerShell)</button>
+                                    <button class="os-tab-btn" data-os="cmd">Windows (CMD)</button>
+                                    <button class="os-tab-btn" data-os="macos">macOS Terminal</button>
+                                    <button class="os-tab-btn" data-os="linux">Linux (nmcli)</button>
+                                </div>
+                                <button class="btn-copy-code" id="btn-copy-dns-cmd">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                                    <span>Copy Setup Script</span>
+                                </button>
+                            </div>
+                            <pre class="dns-code-block font-mono" id="dns-cmd-display"># Select a DNS provider above to generate copyable setup script</pre>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Network Diagnostic & Repair Wizard -->
+                    <div class="net-section-card">
+                        <div class="net-section-header">
+                            <div>
+                                <h3>Network Troubleshooter & Repair Actions</h3>
+                                <p class="section-subtitle">Click to copy and execute immediate network stack repairs on your machine.</p>
+                            </div>
+                        </div>
+
+                        <div class="repair-actions-grid">
+                            <div class="repair-action-card">
+                                <div class="repair-icon">🧹</div>
+                                <div class="repair-meta">
+                                    <h4>Flush & Clear DNS Cache</h4>
+                                    <p>Clears stale hostname records and fixes 'Domain Not Found' or redirected sites.</p>
+                                    <code class="repair-cmd font-mono">ipconfig /flushdns</code>
+                                </div>
+                                <button class="btn-action-copy" data-copy="ipconfig /flushdns">Copy Command</button>
+                            </div>
+
+                            <div class="repair-action-card">
+                                <div class="repair-icon">🔄</div>
+                                <div class="repair-meta">
+                                    <h4>Release & Renew DHCP Lease</h4>
+                                    <p>Forces your router to assign a fresh IP address, resolving LAN IP conflicts.</p>
+                                    <code class="repair-cmd font-mono">ipconfig /release &amp;&amp; ipconfig /renew</code>
+                                </div>
+                                <button class="btn-action-copy" data-copy="ipconfig /release &amp;&amp; ipconfig /renew">Copy Command</button>
+                            </div>
+
+                            <div class="repair-action-card">
+                                <div class="repair-icon">🛡️</div>
+                                <div class="repair-meta">
+                                    <h4>Reset TCP/IP &amp; Winsock Stack</h4>
+                                    <p>Repairs corrupted network socket bindings and restores broken connections.</p>
+                                    <code class="repair-cmd font-mono">netsh winsock reset &amp;&amp; netsh int ip reset</code>
+                                </div>
+                                <button class="btn-action-copy" data-copy="netsh winsock reset &amp;&amp; netsh int ip reset">Copy Command</button>
+                            </div>
+
+                            <div class="repair-action-card">
+                                <div class="repair-icon">📡</div>
+                                <div class="repair-meta">
+                                    <h4>Continuous Ping &amp; Jitter Probe</h4>
+                                    <p>Monitors packet stability to identify Wi-Fi drops and bufferbloat in gaming.</p>
+                                    <code class="repair-cmd font-mono">ping 1.1.1.1 -t</code>
+                                </div>
+                                <button class="btn-action-copy" data-copy="ping 1.1.1.1 -t">Copy Command</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dual Column: Router Defaults & Subnet Calculator -->
+                    <div class="net-dual-grid">
+                        
+                        <!-- Subnet / CIDR IP Calculator -->
+                        <div class="net-sub-card">
+                            <div class="sub-card-header">
+                                <h3>Subnet &amp; CIDR IP Calculator</h3>
+                                <span class="deck-tag">IPv4 Calculator</span>
+                            </div>
+                            <div class="subnet-form-row">
+                                <div class="form-group flex-1">
+                                    <label for="subnet-input-ip">Network IP</label>
+                                    <input type="text" id="subnet-input-ip" class="deck-input font-mono" value="192.168.1.0">
+                                </div>
+                                <div class="form-group flex-1">
+                                    <label for="subnet-input-cidr">CIDR Prefix</label>
+                                    <select id="subnet-input-cidr" class="deck-select font-mono">
+                                        <option value="24">/24 (255.255.255.0 - 254 hosts)</option>
+                                        <option value="25">/25 (255.255.255.128 - 126 hosts)</option>
+                                        <option value="26">/26 (255.255.255.192 - 62 hosts)</option>
+                                        <option value="27">/27 (255.255.255.224 - 30 hosts)</option>
+                                        <option value="28">/28 (255.255.255.240 - 14 hosts)</option>
+                                        <option value="29">/29 (255.255.255.248 - 6 hosts)</option>
+                                        <option value="30">/30 (255.255.255.252 - 2 hosts - P2P)</option>
+                                        <option value="16">/16 (255.255.0.0 - 65,534 hosts)</option>
+                                        <option value="8">/8 (255.0.0.0 - 16M hosts)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="subnet-results-grid font-mono" id="subnet-results-box">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- Router Gateways & Default Credentials Reference -->
+                        <div class="net-sub-card">
+                            <div class="sub-card-header">
+                                <h3>Common Router Gateways &amp; Logins</h3>
+                                <span class="deck-tag">Hardware Reference</span>
+                            </div>
+                            <div class="router-table-wrap">
+                                <table class="router-ref-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Brand</th>
+                                            <th>Default Gateway</th>
+                                            <th>Username</th>
+                                            <th>Password</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="router-ref-tbody">
+                                        <!-- Injected dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- ============================================== -->
+            <!-- TAB 7: NEWS HUB & LIVE STREAMING FEEDS -->
+            <!-- ============================================== -->
+            <section class="tab-panel" id="tab-news" role="tabpanel" aria-labelledby="nav-tab-news">
+                <div class="news-hub-container">
+                    
+                    <!-- Breaking News Ticker Banner -->
+                    <div class="breaking-ticker-wrap">
+                        <div class="ticker-badge">
+                            <span class="live-blink-circle"></span>
+                            <span>BREAKING WIRE</span>
+                        </div>
+                        <div class="ticker-content" id="breaking-ticker-marquee">
+                            <span class="ticker-item">Connecting to real-time international and regional news feeds...</span>
+                        </div>
+                    </div>
+
+                    <!-- Live Video Stream Player Deck -->
+                    <div class="live-stream-theater">
+                        <div class="stream-player-container">
+                            <div class="stream-player-frame-wrap" id="stream-frame-container">
+                                <iframe id="news-live-iframe" 
+                                    src="https://www.youtube-nocookie.com/embed/9Auq9mYxFEE?autoplay=1&mute=0" 
+                                    title="Live News Stream" 
+                                    frameborder="0" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+
+                            <div class="stream-info-bar">
+                                <div class="stream-channel-info">
+                                    <div class="channel-title-row">
+                                        <span class="stream-live-pill">🔴 LIVE</span>
+                                        <h2 class="channel-name" id="current-channel-name">Sky News Live</h2>
+                                        <span class="channel-country-badge" id="current-channel-country">🇬🇧 United Kingdom</span>
+                                    </div>
+                                    <p class="channel-desc" id="current-channel-desc">24/7 breaking international news, live reports, and in-depth analysis from the UK and worldwide.</p>
+                                </div>
+
+                                <div class="stream-controls-group">
+                                    <button class="btn-stream-ctrl" id="btn-theater-mode" title="Toggle Theater Mode">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+                                        <span>Theater Mode</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Live Channels Selector Rail -->
+                        <div class="stream-channels-section">
+                            <div class="channels-head">
+                                <h3>Free International &amp; Regional Live Broadcasts</h3>
+                                <span class="block-note">Click any channel to stream live</span>
+                            </div>
+
+                            <div class="channels-grid-scroll" id="live-channels-list">
+                                <!-- Populated dynamically by news.js -->
+                            </div>
+
+                            <!-- Custom Stream Input Box -->
+                            <div class="custom-stream-box">
+                                <input type="text" id="custom-stream-input" placeholder="Paste any custom YouTube Live URL or Stream link (e.g. https://youtube.com/watch?v=...)">
+                                <button class="btn-deck-inline" id="btn-load-custom-stream">Watch Stream</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Live News Articles Matrix -->
+                    <div class="news-articles-section">
+                        <div class="articles-toolbar">
+                            <div class="articles-location-pill" id="news-location-indicator">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z"/><circle cx="12" cy="10" r="3"/></svg>
+                                <span>Feed Region: <strong id="news-detected-region">Detecting Location...</strong></span>
+                            </div>
+
+                            <div class="articles-search-wrap">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                                <input type="text" id="news-search-input" placeholder="Search live headlines &amp; topics...">
+                            </div>
+
+                            <button class="btn-refresh-news" id="btn-refresh-news" title="Fetch latest stories">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+                                <span>Update Feeds</span>
+                            </button>
+                        </div>
+
+                        <!-- Category Filter Pills -->
+                        <div class="news-category-pills" id="news-category-pills">
+                            <button class="news-cat-pill active" data-category="all">All News Wire</button>
+                            <button class="news-cat-pill" data-category="local">📍 Local Spotlight</button>
+                            <button class="news-cat-pill" data-category="world">🌍 World Headlines</button>
+                            <button class="news-cat-pill" data-category="tech">💻 Tech &amp; Cyber</button>
+                            <button class="news-cat-pill" data-category="science">🚀 Space &amp; Science</button>
+                            <button class="news-cat-pill" data-category="business">📈 Markets &amp; Economy</button>
+                        </div>
+
+                        <!-- News Articles Grid -->
+                        <div class="news-cards-grid" id="news-cards-grid">
+                            <!-- Populated dynamically by news.js -->
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+        </main>
+
+        <!-- FOOTER -->
+        <footer class="app-footer">
+            <div class="footer-inner">
+                <span class="footer-brand">MONITOR COMPLEX v2.6</span>
+                <span class="footer-separator">•</span>
+                <span class="footer-desc">Real-Time Speed Testing • Vector QR Studio • Open-Meteo Radar • Link Aggregator</span>
+                <span class="footer-separator">•</span>
+                <span class="footer-status font-mono">ALL SYSTEMS GO</span>
+                <spam class="footer-separator">•</spam>
+                <span class="footer-copyright">@2026 Infinite Reailty</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- ADD LINK MODAL DIALOG -->
+    <div class="modal-backdrop" id="modal-add-link" style="display: none;">
+        <div class="modal-card">
+            <div class="modal-head">
+                <div class="modal-title-wrap">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    <h3>Add Command Link</h3>
+                </div>
+                <button class="btn-modal-close" id="modal-close-btn">&times;</button>
+            </div>
+            
+            <form id="form-add-link" class="modal-form">
+                <div class="form-group">
+                    <label for="link-form-title">Bookmark Title</label>
+                    <input type="text" id="link-form-title" class="deck-input" placeholder="e.g. GitHub Repository" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="link-form-url">Destination URL</label>
+                    <input type="text" id="link-form-url" class="deck-input" placeholder="https://github.com/..." required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group flex-1">
+                        <label for="link-form-category">Category</label>
+                        <select id="link-form-category" class="deck-select">
+                            <option value="dev">Development</option>
+                            <option value="network">Network & Diagnostics</option>
+                            <option value="weather">Meteorology</option>
+                            <option value="cloud">Cloud & Productivity</option>
+                            <option value="news">Tech & Intel</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group flex-1">
+                        <label for="link-form-tags">Tags (comma separated)</label>
+                        <input type="text" id="link-form-tags" class="deck-input" placeholder="tool, api, git">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="link-form-desc">Description / Purpose</label>
+                    <textarea id="link-form-desc" class="deck-input" rows="2" placeholder="Brief note about this tool..."></textarea>
+                </div>
+
+                <div class="form-group-checkbox">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="link-form-favorite">
+                        <span>Pin to Favorites (Starred)</span>
+                    </label>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="submit" class="btn-primary-action w-full">Save Bookmark</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification Host -->
+    <div id="toast-container" class="toast-host" aria-live="polite"></div>
+
+    <!-- Scripts: QR Engine, Sound, Speedtest, Weather, Links, NetConfig, News, and Master App -->
+    <script src="js/qrcode-engine.js"></script>
+    <script src="js/sound.js"></script>
+    <script src="js/speedtest.js"></script>
+    <script src="js/weather.js"></script>
+    <script src="js/links.js"></script>
+    <script src="js/netconfig.js"></script>
+    <script src="js/news.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
